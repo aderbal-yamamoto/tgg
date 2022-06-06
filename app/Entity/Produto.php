@@ -94,7 +94,7 @@ class Produto{
 
     }
 
-    public function getMargemLucro($obProduto){
+    static function getMargemLucro($obProduto){
 
     	return ($obProduto->preco_venda-$obProduto->preco_custo);
     }
@@ -104,7 +104,7 @@ class Produto{
     	$this->custo = $custo;
     	$this->estoque += $quantidade;
     }
-    public function lucroTotal($obProduto){
+    static function lucroTotal($obProduto){
 
     return (self:: getMargemLucro($obProduto)*$obProduto->quantidade); 
     }
