@@ -1,16 +1,20 @@
 <?php
+namespace App\Db;
+use PDO;
+use Exception;
 
 final class Connection{
 
 	private function __construct(){}
 	
 	public static function open($name){
-
+		
 		//verifica se existe o arquivo de configuração para este banco de dados 
 
 		if (file_exists("config/{$name}.ini")) {
 			
 			$db = parse_ini_file("config/{$name}.ini"); 
+			
 		}
 		else {
 

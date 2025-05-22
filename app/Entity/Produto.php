@@ -1,5 +1,6 @@
 <?php 
-
+namespace App\Entity;
+use PDO;
 class Produto{
 
 	private static $conn;
@@ -31,6 +32,25 @@ class Produto{
 
 	}
 
+	public static function finddesc($id){
+		$sql = "SELECT estoque.*, detalhe.descricao, detalhe.imagem
+		FROM estoque
+		JOIN detalhe ON estoque.id = detalhe.fk_id where estoque.id = '$id' 
+		";
+		$result = self::$conn->query($sql);
+		return $result->fetchObject(__CLASS__);
+	}
+
+	public static function findbarcode($barcode){
+
+		$sql = "SELECT * FROM estoque where codigobarras = '$barcode' ";
+		//print "$sql <br>\n";
+		$result = self::$conn->query($sql);
+		return $result->fetchObject(__CLASS__);
+
+
+	}
+
 	public static function all($filter = ''){
 
 		$sql = "SELECT * FROM estoque ";
@@ -51,19 +71,40 @@ class Produto{
 		return self::$conn->query($sql);
 
 	}
-
+	//função para salvar no banco qualquer item
+	public function saveGeneric($table){
+		
+		if(array_key_exists("id", $this->data)){
+			if($this->data['id'] === ""){
+				$this->data['id'] = $this->getLastId() + 1;
+			}
+		}
+		
+		$key = array_keys($this->data);
+		$key1 = implode(" , ",$key);
+		$values = array_values($this->data);
+		$valores = implode("' , '", $values);
+		$value =    " '" . $valores ."'";
+		
+		$sql = "INSERT INTO " . $table . "($key1) VALUES ($value);";
+		
+		return self::$conn->exec($sql);
+				
+	}
 	public function save(){
-
+		
 		if (empty($this->data['id'])) {
 			$id = $this->getLastId() +1;
 			$sql = "INSERT INTO estoque (id, nome, preco_custo, preco_venda, ".
-								"  quantidade, validade)" . 
+								"  quantidade, validade, codigobarras)" . 
 								"VALUES ('{$id}',".
 											   "'{$this->nome}'," .
 											   "'{$this->preco_custo}'," .
 											   "'{$this->preco_venda}'," .
 											   "'{$this->quantidade}'," .
-											   "'{$this->validade}')";
+											   "'{$this->validade}',".
+											   "'{$this->codigobarras}')";
+			
 
 		}
 		else{
@@ -79,6 +120,7 @@ class Produto{
 
 		}
 		print "$sql <br>\n";
+		Transaction::log($sql);
 	
 		return self::$conn->exec($sql);
 		

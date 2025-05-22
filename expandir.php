@@ -1,9 +1,7 @@
 <?php  
-require_once 'app/Entity/Produto.php';
-require_once 'app/Db/Connection.php';
-require_once 'app/Transaction.php';
-
 require __DIR__.'/vendor/autoload.php';
+use App\Entity\Produto;
+use App\Entity\Transaction;
 
 define('TITLE', 'Detalhes do Produto');
 
@@ -23,8 +21,17 @@ try {
 
 	Produto::setConnection($conn);
 	
-	//consulta vaga 
-	$obProduto = Produto::find($_GET['id']);
+	//consulta Produto 
+	//$obProduto = Produto::find($_GET['id']);
+	/*
+			Criado para os produtos cadastrados sem descrição onde ele faz 
+		a pesquisa com join se não houver faz a pesquisa sem ele.
+	*/
+	$obProduto = Produto::finddesc($_GET['id']);
+	if (!$obProduto instanceof produto){
+		$obProduto = Produto::find($_GET['id']);
+		$obProduto->descricao = "Produto sem descrição";
+	}
 	//echo "<pre>" ; print_r($obProduto); echo "</pre>"; exit;
 	$Lucro = Produto::getMargemLucro($obProduto);	
 	

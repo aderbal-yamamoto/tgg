@@ -1,4 +1,6 @@
 <?php 
+namespace App\Entity;
+
 abstract class Logger {
 
 	protected $filename; //local do arquivo de LOG
@@ -6,7 +8,7 @@ abstract class Logger {
 	public function __construct($filename) {
 
 		$this->filename = $filename;
-		file_put_contents($filename, ''); //limpa o conteudo do arquivo
+		//file_put_contents($filename, ''); //limpa o conteudo do arquivo
 
 	}
 	//define o metodo write como obrigatório

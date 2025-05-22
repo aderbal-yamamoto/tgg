@@ -1,0 +1,5 @@
+Corrigir o erro de expandir quando o produto não ouver descrição.
+Inserir função para criar descrição no ato da criação de um novo produto.
+O campo descrição vai ser inserido em uma nova pagina dentro do formulário 
+que será chamada no inserir descrição enviando via get seu id é necessário 
+criar essa pagina 07/04/2024.

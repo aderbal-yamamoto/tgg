@@ -7,14 +7,10 @@ use App\Entity\Transaction;
 use App\Entity\Logger;
 use App\Entity\LoggerTXT;
 
-
 define('TITLE', 'Editar Produto');
 
 //validaçao do id
-if (!isset($_GET['id']) or !is_numeric($_GET['id'])) {
-	header('location: index.php?status=error');
-	exit;	
-}
+
  try{
  	//ABRIR CONEXÃO COM BANCO
 	Transaction::open('config');
@@ -24,7 +20,7 @@ if (!isset($_GET['id']) or !is_numeric($_GET['id'])) {
 	Produto::setConnection($conn);
 
 	//CONSULTA PRODUTO
-	$obProduto = Produto::find($_GET['id']);//echo "<pre>" ; print_r($data); echo "</pre>"; exit;
+	$obProduto = Produto::findbarcode($_GET['barcode']);
 	//VALIDAÇÃO DA VAGA
 	if (!$obProduto instanceof produto) {
 		header('location: index.php?status=error');
@@ -43,7 +39,6 @@ if (!isset($_GET['id']) or !is_numeric($_GET['id'])) {
     //echo "<pre>" ; print_r($sql); echo "</pre>"; exit;
     //define o arquivo de logo
 	Transaction::setLogger(new LoggerTXT('tmp/log_editar_produto.txt'));
-	
 	
 	Transaction::log($obProduto->nome);
 

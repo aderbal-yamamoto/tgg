@@ -16,6 +16,7 @@
 			<label>Quantidade: <?=$obProduto->quantidade?></label> <label>Lucro: <?=$Lucro?></label><br>
 			<label>Validade: <?=$obProduto->validade?></label><br>
 		    <label>Lucro Total: <?=$lucro_total?></label><br>
+			<label>Descricao: <?=$obProduto->descricao?></label><br>
 		</div>
 
   

@@ -3,7 +3,11 @@
 	<section>
 		<a href="index.php">
 		<button class="btn btn-success"> Voltar </button>
-		</a>	
+		</a>
+		<?php
+		$url = "descricao.php?id=$obProduto->id";
+		echo "<a href='$url'><button class='btn btn-success'> Inserir descrição </button></a>";
+		?>	
 	</section>
 	<h2 class="mt-3"> <?=TITLE?> </h2>
 
@@ -11,7 +15,9 @@
 
 		<div class="form-group">
 			<label>nome</label>
+			
 			<input type="text" class="form-control" name="nome" value="<?=$obProduto->nome?>">
+
 		</div>
 
 		<div class="form-group">

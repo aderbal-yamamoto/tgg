@@ -13,6 +13,7 @@
   }
 
 $resultados = '';
+
 foreach ($produtos as $produto) {
 if ($produto->quantidade >0) {
 	$lucro = (-$produto->preco_custo + $produto->preco_venda);
@@ -23,11 +24,12 @@ if ($produto->quantidade >0) {
 							<td>'.$lucro.'</td>
 							<td>'.$produto->quantidade.'</td>
 							<td>'.$produto->validade.'</td>
+							<td>'.$produto->codigobarras.'</td>
 							<td>
 								<a href="editar.php?id='.$produto->id.'">
 		   						<button type"button" class="btn btn-primary">Editar</button>
 								</a><a href="expandir.php?id='.$produto->id.'">
-		   						<button type"button" class="btn btn-danger">Espandir</button>
+		   						<button type"button" class="btn btn-success">Expandir</button>
 								</a>
 
 							</td>
@@ -58,6 +60,9 @@ if ($produto->quantidade >0) {
 		<a href="fora_de_estoque.php">
 		<button class="btn btn-success"> Produtos fora de estoque </button>
 		</a>
+		<a href="leitor_barras.html">
+		<button class="btn btn-success"> Codigo de Barras </button>
+		</a>	
 	</section>
 
 	<section>
@@ -68,10 +73,10 @@ if ($produto->quantidade >0) {
 				  <th>NOME</th>
 				  <th>CUSTO</th>
 				  <th>VENDA</th>
-				  <th>LUCRO UN</th>
+				  <th>LUCRO</th>
 				  <th>QUANTIDADE</th>
 				  <th>VALIDADE</th>
-				  
+				  <th>CÓDIGO</th>
 				</tr>
 			</thead>
 			<body>

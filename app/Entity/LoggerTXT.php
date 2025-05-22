@@ -1,4 +1,5 @@
 <?php 
+namespace App\Entity;
 
 class LoggerTXT extends Logger {
 
@@ -10,10 +11,12 @@ class LoggerTXT extends Logger {
 		//monta srting
 
 		$text = "$time :: $message\n";
- //var_dump($text);
+
 		//adiciona ao final do arquivo
 
 		$handler = fopen($this->filename, 'a');
+		
+		
 		fwrite($handler, $text);
 		fclose($handler);
 

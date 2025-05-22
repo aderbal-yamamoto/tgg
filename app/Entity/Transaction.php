@@ -1,11 +1,16 @@
 <?php 
+namespace App\Entity;
+use App\Db\Connection;
+
+
 final class Transaction {
 	private static $conn;
 	private static $logger;
 	private function __construct(){}
+
 	public static function open($database){
 		if(empty(self::$conn))
-		{
+		{	
 			self::$conn = Connection::open($database);
 			self::$conn->beginTransaction(); //inicia a transação
 			self::$logger = NULL; //desliga o log sql
@@ -31,6 +36,7 @@ final class Transaction {
 		}
 	public static function log($message){
 		if (self::$logger) {
+			
 			self::$logger->write($message);
 		}
 	}

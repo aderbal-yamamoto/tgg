@@ -1,10 +1,10 @@
 <?php  
 
 require __DIR__.'/vendor/autoload.php';
+use App\Entity\Produto;
 
-require_once 'app/Entity/Produto.php';
-require_once 'app/Db/Connection.php';
-require_once 'app/Transaction.php';
+use App\Entity\Transaction;
+
 try{
 Transaction::open('config');
 //ABRIR CONEXÃO COM BANCO DE DADOS 

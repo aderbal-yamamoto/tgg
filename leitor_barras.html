@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processamento de imagem na câmera</title>
+    <style>
+        #video-container {
+            position: relative;
+            width: 640px;
+            height: 480px;
+        }
+        #detection-box {
+            position: absolute;
+            border: 2px solid red;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="col-md-4 mx-auto"><h1>Leitor de Código de barras</h1></div>
+    <div class="col-md-1 mx-auto mt-3" id="video-container">
+        <video id="video" width="640" height="480" autoplay></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <div id="detection-box"></div>
+    </div>
+    <div id="result"></div>
+    <div class="col-md-1 mx-auto mt-3">
+    <a href="index.php">
+		<button class="btn btn-success"> Voltar </button>
+		</a>	
+    </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        
+    <script src="https://cdn.jsdelivr.net/npm/quagga/dist/quagga.min.js"></script>
+    <script>
+        // Acessando a câmera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                var video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
+
+                // Adicionando o quadro de detecção do código de barras
+                var detectionBox = document.getElementById('detection-box');
+                var videoContainer = document.getElementById('video-container');
+                var videoWidth = videoContainer.offsetWidth;
+                var videoHeight = videoContainer.offsetHeight;
+                var detectionBoxWidth = 400; // Largura do quadro de detecção
+                var detectionBoxHeight = 200; // Altura do quadro de detecção
+                var detectionBoxLeft = (videoWidth - detectionBoxWidth) / 2;
+                var detectionBoxTop = (videoHeight - detectionBoxHeight) / 2;
+                detectionBox.style.left = detectionBoxLeft + 'px';
+                detectionBox.style.top = detectionBoxTop + 'px';
+                detectionBox.style.width = detectionBoxWidth + 'px';
+                detectionBox.style.height = detectionBoxHeight + 'px';
+
+                // Configurando o QuaggaJS
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: document.querySelector('#video') // Use o elemento de vídeo como entrada
+                    },
+                    decoder: {
+                        readers: ["ean_reader"] // Especifica o tipo de código de barras que você quer ler (no caso, EAN)
+                    }
+                }, function(err) {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    console.log("Inicialização do QuaggaJS concluída.");
+                    Quagga.start();
+                });
+
+                // Processamento da imagem capturada pelo QuaggaJS
+                Quagga.onDetected(function(result) {
+                    var code = result.codeResult.code;
+                    document.getElementById('result').innerText = "Código de barras detectado: " + code;
+
+                    // Enviar o código de barras via POST para o servidor PHP
+                    fetch('server.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ barcode: code })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Falha ao enviar o código de barras.');
+                        }
+                        // Redireciona para outra página apenas após o envio bem-sucedido
+                        window.location.href = 'outra_pagina.php?barcode=' + encodeURIComponent(code);
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                    });
+                });
+            })
+            .catch(function(err) {
+                console.log('Erro ao acessar a câmera: ', err);
+            });
+    </script>
+
+</body>
+</html>
