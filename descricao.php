@@ -1,11 +1,7 @@
 <?php  
-
 require __DIR__.'/vendor/autoload.php';
-require_once 'app/Entity/Produto.php';
-require_once 'app/Db/Connection.php';
-require_once 'app/Transaction.php';
-require_once 'app/Logger.php';
-require_once 'app/LoggerTXT.php';
+use App\Entity\Produto;
+use App\Entity\Transaction;
 
 define('TITLE', 'Editar Produto');
 

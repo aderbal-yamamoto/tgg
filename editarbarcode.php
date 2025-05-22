@@ -2,9 +2,7 @@
 
 require __DIR__.'/vendor/autoload.php';
 use App\Entity\Produto;
-use App\Db\Connection;
 use App\Entity\Transaction;
-use App\Entity\Logger;
 use App\Entity\LoggerTXT;
 
 define('TITLE', 'Editar Produto');
