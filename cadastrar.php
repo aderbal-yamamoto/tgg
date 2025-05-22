@@ -13,11 +13,14 @@ try{
 		var_dump($codigobarras);
 		
 	}
+	//percentual errado
+	/*
 	if (isset($_POST['preco_venda'])) {
 		$porcentagem = ($_POST['preco_venda'] * 0.35);
 		$custo = number_format($porcentagem,2);
 	
 	}
+	*/
 	
 	Transaction::open('config');
 	//ABRIR CONEXÃO COMO BANCO
@@ -28,10 +31,10 @@ try{
 	$obProduto = new Produto;
 
 	//validação do post
- 	if (isset($_POST['nome'],$custo,$_POST['preco_venda'], $_POST['quantidade'],$_POST['validade'],$codigobarras)) {
+ 	if (isset($_POST['nome'],$_POST['preco_custo'],$_POST['preco_venda'], $_POST['quantidade'],$_POST['validade'],$codigobarras)) {
 		$obProduto->id          = $id = "" ; 
  		$obProduto->nome        = strtoupper($_POST['nome']);
- 		$obProduto->preco_custo = $custo;
+ 		$obProduto->preco_custo = $_POST['preco_custo'];
  		$obProduto->preco_venda = $_POST['preco_venda'];
  		$obProduto->quantidade  = $_POST['quantidade'];
  		$obProduto->validade    = $_POST['validade'];
