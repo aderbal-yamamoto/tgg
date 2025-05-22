@@ -2,6 +2,7 @@
 require __DIR__.'/vendor/autoload.php';
 use App\Entity\Transaction;
 use App\Entity\Produto;
+use App\Entity\LoggerTXT;
 
 define('TITLE', 'Cadastrar produto');
 
@@ -36,6 +37,12 @@ try{
  		$obProduto->validade    = $_POST['validade'];
 		$obProduto->codigobarras     = $codigobarras;
  		$obProduto->saveGeneric('estoque');
+	
+	Transaction::setLogger(new LoggerTXT('tmp/log_produto.txt'));
+	
+	
+	Transaction::log($obProduto->nome);
+
  	Transaction::close();
  	header('location: index.php?status=success');
  	exit;
